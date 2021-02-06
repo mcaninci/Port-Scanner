@@ -65,6 +65,7 @@ namespace Port_Scanner_UI
             this.btnStart.Size = new System.Drawing.Size(100, 23);
             this.btnStart.TabIndex = 0;
             this.btnStart.Text = "Start Scan";
+            this.btnStart.Click += new System.EventHandler(this.btnStart_Click);
             // 
             // btnStop
             // 
@@ -213,6 +214,7 @@ namespace Port_Scanner_UI
             this.richEditCommentControl1.Location = new System.Drawing.Point(0, 0);
             this.richEditCommentControl1.Name = "richEditCommentControl1";
             this.richEditCommentControl1.ReadOnly = false;
+            this.richEditCommentControl1.RichEditControl = null;
             this.richEditCommentControl1.Size = new System.Drawing.Size(192, 171);
             this.richEditCommentControl1.TabIndex = 0;
             // 

@@ -15,8 +15,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="IpOperation">
-      <HintPath>..\IpOperation\bin\Debug\netcoreapp3.1\IpOperation.dll</HintPath>
+    <Reference Include="IpOperation.Net">
+      <HintPath>..\IpOperation.Net\bin\Debug\IpOperation.Net.dll</HintPath>
     </Reference>
   </ItemGroup>
 

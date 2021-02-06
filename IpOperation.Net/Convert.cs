@@ -23,7 +23,7 @@ namespace IpOperation
 
         public static List<string> RangeToIpList(string ipMin, string ipMax)
         {
-            List<string> ipList = new();
+            List<string> ipList = new List<string>();
             var start = ToIpInt(ipMin);
             var end = ToIpInt(ipMax);
 

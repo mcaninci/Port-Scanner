@@ -5,9 +5,9 @@ VisualStudioVersion = 16.0.30804.86
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Port Scanner UI", "Port Scanner UI\Port Scanner UI.csproj", "{BA930343-7217-487B-AC6A-8BAFB23CBD61}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Port Scanner Test", "Port Scanner Test\Port Scanner Test.csproj", "{52B07E78-97A6-44D7-9459-7BC117D3FB7E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Port Scanner Test", "Port Scanner Test\Port Scanner Test.csproj", "{52B07E78-97A6-44D7-9459-7BC117D3FB7E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IpOperation", "IpOperation\IpOperation.csproj", "{57B7563C-FDA6-4EEC-97A6-7F1877FE947B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IpOperation.Net", "IpOperation.Net\IpOperation.Net.csproj", "{08CED4EC-FE9A-4E47-984E-D6EA48D688C1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,10 +23,10 @@ Global
 		{52B07E78-97A6-44D7-9459-7BC117D3FB7E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{52B07E78-97A6-44D7-9459-7BC117D3FB7E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{52B07E78-97A6-44D7-9459-7BC117D3FB7E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{57B7563C-FDA6-4EEC-97A6-7F1877FE947B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{57B7563C-FDA6-4EEC-97A6-7F1877FE947B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{57B7563C-FDA6-4EEC-97A6-7F1877FE947B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{57B7563C-FDA6-4EEC-97A6-7F1877FE947B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{08CED4EC-FE9A-4E47-984E-D6EA48D688C1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{08CED4EC-FE9A-4E47-984E-D6EA48D688C1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{08CED4EC-FE9A-4E47-984E-D6EA48D688C1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{08CED4EC-FE9A-4E47-984E-D6EA48D688C1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

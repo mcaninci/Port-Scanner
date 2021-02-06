@@ -1,5 +1,6 @@
 using IpOperation;
 using NUnit.Framework;
+using System.Collections.Generic;
 
 namespace Port_Scanner_Test
 {
@@ -14,8 +15,8 @@ namespace Port_Scanner_Test
         public void IpConvertMethods()
         {
             string strIp = "192.168.1.1";
-            long lIp = IpOperation.Convert.ToInt(strIp);
-            string responseIp = IpOperation.Convert.ToString(lIp);
+            long lIp = IpOperation.Convert.ToIpInt(strIp);
+            string responseIp = IpOperation.Convert.ToIpString(lIp);
            
 
             if (strIp == responseIp)
@@ -34,11 +35,10 @@ namespace Port_Scanner_Test
             string ipMin = "192.168.1.1";
 
             string ipMax = "192.168.1.2";
-            IpValidation validetion = new ();
+         
+            bool validation1 = IpValidation.IsRangeValid(ipMin, ipMax);
 
-            bool validation1 = validetion.isRangeValid(ipMin, ipMax);
-
-            bool validation2 = validetion.isRangeValid(ipMax, ipMin);
+            bool validation2 = IpValidation.IsRangeValid(ipMax, ipMin);
 
             if (validation1 == true && validation2==false)
             {
@@ -47,7 +47,26 @@ namespace Port_Scanner_Test
             Assert.Fail("IpRangeValidation method not working right");
         }
 
+        [Test]
+        public void RangeToIpList()
+        {
+            string ipMin = "192.168.1.1";
 
+            string ipMax = "192.168.1.3";
+
+            List<string> ipList= IpOperation.Convert.RangeToIpList(ipMin,  ipMax);
+
+             ipMin = "0.0.0.0";
+            ipMax = "0.0.1.0";
+            List<string> ipList2 = IpOperation.Convert.RangeToIpList(ipMin, ipMax);
+            if (ipList.Count==3 && ipList2.Count==257)
+            {
+                Assert.Pass();
+            }
+            Assert.Fail("RangeToIpList method not working right");
+        }
+
+        
 
     }
 }

@@ -33,5 +33,21 @@ namespace Port_Scanner_UI
             rtxtConsole.ScrollToCaret();
            
         }
+
+        private void btnStart_Click(object sender, EventArgs e)
+        {
+            string minIp = txtIprangeMin.Text;
+            string maxIp = txtIprangeMax.Text;
+            bool validationIp = IpOperation.IpValidation.IsRangeValid(minIp, maxIp);
+            if (validationIp)
+            {
+                List<string> ipList = IpOperation.Convert.RangeToIpList(minIp, maxIp);
+            }
+            else
+            {
+                MessageBox.Show("Ip range is not valid. Please check min- max Ip");
+            }
+
+        }
     }
 }
