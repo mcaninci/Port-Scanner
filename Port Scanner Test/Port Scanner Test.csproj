@@ -15,8 +15,17 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Reference Include="Infrastructure.Data">
+      <HintPath>..\Infrastructure.Data\bin\Debug\Infrastructure.Data.dll</HintPath>
+    </Reference>
     <Reference Include="IpOperation.Net">
       <HintPath>..\IpOperation.Net\bin\Debug\IpOperation.Net.dll</HintPath>
+    </Reference>
+    <Reference Include="TCPOperation">
+      <HintPath>..\TCPOperation\bin\Debug\TCPOperation.dll</HintPath>
+    </Reference>
+    <Reference Include="ThreadOperation">
+      <HintPath>..\ThreadOperation\bin\Debug\ThreadOperation.dll</HintPath>
     </Reference>
   </ItemGroup>
 
