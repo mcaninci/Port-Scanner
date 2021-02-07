@@ -42,12 +42,22 @@ namespace Port_Scanner_UI
                
 
                     int portNum = portRange.NextPort();
-                    bool isPortOpen = tcpRequest.Connect(portNum);
+                bool isPortOpen;
+                try
+                {
+                     isPortOpen = tcpRequest.Connect(portNum);
+              
+                   
                     if (isPortOpen)
                     {
                         logger.WriteLog(currentHost.Value + ":" + portNum + " is open");
                     }
-              
+                }
+                catch (Exception e)
+                {
+                    logger.WriteLog("ERROR: "+e.Message);
+
+                }
             }
 
 
