@@ -50,6 +50,8 @@ namespace TCPOperation
         /// <returns></returns>
         public bool Connect(int port)
         {
+            //Thread sleep added for cpu optimization
+            Thread.Sleep(3);
             var tcpClient = new TcpClient();
 
             var state = new isTcpPortOpen
@@ -86,6 +88,7 @@ namespace TCPOperation
             }
             catch
             {
+                client.Close();
                 return;
             }
 

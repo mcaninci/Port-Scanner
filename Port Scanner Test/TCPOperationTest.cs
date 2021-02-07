@@ -2,6 +2,7 @@
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Net.Sockets;
 using System.Text;
@@ -19,13 +20,36 @@ namespace Port_Scanner_Test
         public void Setup()
         {
             tcpR = new TCPRequest("127.0.0.1");
-            portRange = new PortRange(0, 2);
+            portRange = new PortRange(1, 100);
+        }
+
+
+        [Test]
+        public void PerformanceTest()
+        {
+            Stopwatch sw = new Stopwatch();
+            sw.Start();
+            while (true)
+            {
+                if (!portRange.MorePorts())
+                {
+                    break;
+                }
+
+
+                int portNum = portRange.NextPort();
+                tcpR.Connect(portNum);
+            }
+            sw.Stop();
+
+            Console.WriteLine("Elapsed={0}", sw.Elapsed);
+         
         }
 
         [Test]
         public void OpenPortTest()
         {
-            bool connectionOpen= tcpR.Connect(5050);
+            bool connectionOpen = tcpR.Connect(5050);
 
             if (connectionOpen)
             {
@@ -52,10 +76,10 @@ namespace Port_Scanner_Test
         [Test]
         public void PortRangeTest()
         {
-           int first= portRange.NextPort();
-           int second= portRange.NextPort();
-           int last= portRange.NextPort();
-            if (first==0 && second==1 && last==2)
+            int first = portRange.NextPort();
+            int second = portRange.NextPort();
+            int last = portRange.NextPort();
+            if (first == 1 && second == 2 && last == 3)
             {
                 Assert.Pass();
             }

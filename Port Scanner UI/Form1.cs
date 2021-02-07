@@ -43,6 +43,7 @@ namespace Port_Scanner_UI
 
         private void btnStart_Click(object sender, EventArgs e)
         {
+            rtxtConsole.Text = "";
             string minIp = txtIprangeMin.Text;
             string maxIp = txtIprangeMax.Text;
 

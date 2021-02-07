@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using TCPOperation;
 
@@ -21,18 +22,16 @@ namespace Port_Scanner_UI
                 if (!portRange.MorePorts())
                 {
                     portRange.ResetPorts();
-                    logger.WriteLog("Log :"+currentHost.Value +portRange.GetStartPort()+"-"+portRange.GetEndPort()+"  port range is completed by thread  ");
+                    logger.WriteLog("Log :"+currentHost.Value +":"+portRange.GetStartPort()+"-"+portRange.GetEndPort()+"  port range is completed by thread  ");
                     currentHost = currentHost.Next;
                     if (currentHost == null)
                     {
                         break;
                     }
-                   
+                    //Thread sleep added for cpu optimization
+                    Thread.Sleep(3);
                     tcpRequest.UpdateHost(currentHost.Value);
-                  
-                  
-                  
-                 
+
                 }
                 int portNum = portRange.NextPort();
                 bool isPortOpen = tcpRequest.Connect(portNum);

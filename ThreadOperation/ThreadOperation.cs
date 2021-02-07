@@ -17,7 +17,9 @@ namespace ThreadOperation
         List<Thread> threadList;
         LinkedList<string> Ip;
         int threadCount;
-       public ThreadOperation(LinkedList<string> Ip,int threadCount, Ilogger logger =null, IThreadOperation threadOperation = null )
+        static EventWaitHandle threadSignal = new AutoResetEvent(false);
+        static EventWaitHandle updateSignal = new AutoResetEvent(false);
+        public ThreadOperation(LinkedList<string> Ip,int threadCount, Ilogger logger =null, IThreadOperation threadOperation = null )
         {
             this.threadOperation = threadOperation==null?new NullObjectThreadExecute():threadOperation;
             this.logger = logger==null?new NullobjectLogger():logger;
@@ -34,8 +36,10 @@ namespace ThreadOperation
             for (int i = 0; i < threadCount; i++)
             {
                 PortRange portRange = SetThreadPortRange(i);
-                Thread tmpThread = new Thread(() => ThreadStart(portRange));
+                int index = i;
+                Thread tmpThread = new Thread(() => ThreadStart(portRange,index, threadSignal));
                 tmpThread.Name = "Thread " + i;
+                tmpThread.IsBackground = true;
                 threadList.Add(tmpThread);
             }
             return threadList;
@@ -67,10 +71,11 @@ namespace ThreadOperation
             return portRange;
         }
 
-        private void ThreadStart(IPortRange portRange)
+        private void ThreadStart(IPortRange portRange,int threadIndex, EventWaitHandle threadSignal)
         {
 
-            threadOperation.executeMethod(Ip, portRange, logger);
+            _=threadOperation.executeMethod(Ip, portRange, logger, threadSignal);
+            CheckProcessandsuspend(threadIndex);
         }
 
         public void ThreadRun()
@@ -89,7 +94,7 @@ namespace ThreadOperation
 
             if (threadList.Count< threadCount)
             {
-
+                threadSignal.Set();
             }
             else
             {
@@ -97,7 +102,25 @@ namespace ThreadOperation
             }
 
         }
-        
+      private void CheckProcessandsuspend(int threadIndex)
+        {
+            var thread= threadList[threadIndex];
+            thread.Abort();
+        }  
+
+        public void TerminateAllThread()
+        {
+            foreach (var item in threadList)
+            {
+                if (item.IsAlive)
+                {
+                    item.Abort();
+                }
+                
+            }
+            logger.WriteLog("Log:All Thread stopped.");
+
+        }
 
 
 
