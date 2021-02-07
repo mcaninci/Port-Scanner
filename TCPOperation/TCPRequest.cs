@@ -35,12 +35,19 @@ namespace TCPOperation
 
         }
 
+        public void UpdateHost(string host)
+        {
+            this.host = host;
+            
 
-      /// <summary>
-      /// The method  check port status for main host
-      /// </summary>
-      /// <param name="port"></param>
-      /// <returns></returns>
+        }
+
+
+        /// <summary>
+        /// The method  check port status for main host
+        /// </summary>
+        /// <param name="port"></param>
+        /// <returns></returns>
         public bool Connect(int port)
         {
             var tcpClient = new TcpClient();

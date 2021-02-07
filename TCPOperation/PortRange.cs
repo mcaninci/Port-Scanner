@@ -21,7 +21,18 @@ namespace TCPOperation
             stop = stopPort;
             ports = start;
         }
-
+        public int GetStartPort()
+        {
+           return start;
+        }
+        public int GetEndPort()
+        {
+            return stop;
+        }
+        public void ResetPorts()
+        {
+            ports = start;
+        }
         public bool MorePorts()
         {
             return (stop - ports) >= 0;

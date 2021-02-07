@@ -54,11 +54,11 @@ namespace Port_Scanner_Test
 
             string ipMax = "192.168.1.3";
 
-            List<string> ipList= IpOperation.Convert.RangeToIpList(ipMin,  ipMax);
+            LinkedList<string> ipList= IpOperation.Convert.RangeToIpList(ipMin,  ipMax);
 
              ipMin = "0.0.0.0";
             ipMax = "0.0.1.0";
-            List<string> ipList2 = IpOperation.Convert.RangeToIpList(ipMin, ipMax);
+            LinkedList<string> ipList2 = IpOperation.Convert.RangeToIpList(ipMin, ipMax);
             if (ipList.Count==3 && ipList2.Count==257)
             {
                 Assert.Pass();

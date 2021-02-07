@@ -38,7 +38,7 @@ namespace Port_Scanner_Test
         [Test]
         public void ClosePortTest()
         {
-            bool connectionOpen = tcpR.Connect(99);
+            bool connectionOpen = tcpR.Connect(1);
 
             if (!connectionOpen)
             {

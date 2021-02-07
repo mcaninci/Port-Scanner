@@ -8,7 +8,11 @@ namespace Infrastructure.Data.Interface
 {
     public interface IPortRange
     {
-         bool MorePorts();
-         int NextPort();
+        bool MorePorts();
+        int NextPort();
+        void ResetPorts();
+        int GetStartPort();
+
+        int GetEndPort();
     }
 }

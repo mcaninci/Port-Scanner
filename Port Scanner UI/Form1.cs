@@ -16,16 +16,19 @@ namespace Port_Scanner_UI
     public partial class Form1 : Form
     {
         Log logger = new Log();
+        ScanOperation scanOperation;
         public Form1()
         {
             InitializeComponent();
             logger.SetTargetComp(rtxtConsole);
+            scanOperation = new ScanOperation(logger);
         }
 
         private void trckBarThreadCount_EditValueChanged(object sender, EventArgs e)
         {
             TrackBarControl trackBarControl = sender as TrackBarControl;
            lblThreadCounter.Text = trackBarControl.EditValue.ToString();
+            scanOperation.ThreadCountUpdate(trackBarControl.Value);
         }
 
         private void rtxtConsole_TextChanged(object sender, EventArgs e)
@@ -42,17 +45,14 @@ namespace Port_Scanner_UI
         {
             string minIp = txtIprangeMin.Text;
             string maxIp = txtIprangeMax.Text;
+
             bool validationIp = IpOperation.IpValidation.IsRangeValid(minIp, maxIp);
+            int threadCount = trckBarThreadCount.Value;
             if (validationIp)
             {
-                List<string> ipList = IpOperation.Convert.RangeToIpList(minIp, maxIp);
-             
-                Parallel.ForEach(ipList, item =>
-                {
-                    logger.WriteLog(item);
+                LinkedList<string> ipList = IpOperation.Convert.RangeToIpList(minIp, maxIp);
 
-                }
-     );
+                scanOperation.ScanStart(threadCount, ipList);
 
             }
             else
@@ -60,6 +60,11 @@ namespace Port_Scanner_UI
                 MessageBox.Show("Ip range is not valid. Please check min- max Ip");
             }
 
+        }
+
+        private void btnStop_Click(object sender, EventArgs e)
+        {
+            scanOperation.ScanStop();
         }
     }
 }

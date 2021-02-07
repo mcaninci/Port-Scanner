@@ -14,14 +14,15 @@ namespace Port_Scanner_Test
     
     class ThreadOperation
     {
-        Create threadcreate;
+        global::ThreadOperation.ThreadOperation threadcreate;
         [SetUp]
         public void Setup()
         {
             NullobjectLogger logger = new();
             NullObjectThreadExecute threadExecute = new();
-
-            threadcreate = new Create("127.0.0.1", 10, logger: logger, threadOperation: threadExecute);
+            LinkedList <string> ips= new LinkedList<string>();
+            ips.AddLast("127.0.0.1");
+            threadcreate = new global::ThreadOperation.ThreadOperation(ips, 10, logger: logger, threadOperation: threadExecute);
           //  threadcreate = new Create("127.0.0.1", 10, null,null);
         }
 
@@ -33,7 +34,7 @@ namespace Port_Scanner_Test
 
          var second = threadcreate.SetThreadPortRange(1);
           
-            if (second.NextPort()== 6554 && first.NextPort()==0)
+            if (second.NextPort()== 6554 && first.NextPort()==1)
             {
                 Assert.Pass();
             }

@@ -26,7 +26,7 @@ namespace Infrastructure.Data.Model
 
   public  class NullObjectThreadExecute : IThreadOperation
     {
-        bool IThreadOperation.executeMethod(string Ip, IPortRange portRange, Ilogger logger)
+        bool IThreadOperation.executeMethod(LinkedList<string> Ip, IPortRange portRange, Ilogger logger)
         {
             
             return false;

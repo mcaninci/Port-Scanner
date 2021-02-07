@@ -8,6 +8,6 @@ namespace Infrastructure.Data.Interface
 {
   public  interface IThreadOperation
     {
-        bool executeMethod(string Ip, IPortRange portRange, Ilogger logger);
+        bool executeMethod(LinkedList<string> Ip, IPortRange portRange, Ilogger logger);
     }
 }

@@ -21,15 +21,17 @@ namespace IpOperation
             return IPAddress.Parse(address.ToString()).ToString();
         }
 
-        public static List<string> RangeToIpList(string ipMin, string ipMax)
+        public static LinkedList<string> RangeToIpList(string ipMin, string ipMax)
         {
-            List<string> ipList = new List<string>();
+            LinkedList<string> ipList = new LinkedList<string>();
             var start = ToIpInt(ipMin);
             var end = ToIpInt(ipMax);
 
-            for (int i = 0; i <= end-start; i++)
+      
+
+            for (int i = 0; i <= (end-start); i++)
             {
-                ipList.Add(ToIpString(start+i));
+                ipList.AddLast(ToIpString(start+i));
             }
 
             return ipList;

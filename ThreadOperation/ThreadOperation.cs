@@ -10,14 +10,14 @@ using TCPOperation;
 
 namespace ThreadOperation
 {
-    public class Create
+    public class ThreadOperation
     {
         Ilogger logger;
         IThreadOperation threadOperation;
         List<Thread> threadList;
-        string Ip;
+        LinkedList<string> Ip;
         int threadCount;
-       public Create(string Ip,int threadCount, Ilogger logger =null, IThreadOperation threadOperation = null )
+       public ThreadOperation(LinkedList<string> Ip,int threadCount, Ilogger logger =null, IThreadOperation threadOperation = null )
         {
             this.threadOperation = threadOperation==null?new NullObjectThreadExecute():threadOperation;
             this.logger = logger==null?new NullobjectLogger():logger;
@@ -27,9 +27,9 @@ namespace ThreadOperation
 
         }     
 
+  
         public List<Thread> GenerateThread()
         {
-          
 
             for (int i = 0; i < threadCount; i++)
             {
@@ -50,7 +50,7 @@ namespace ThreadOperation
             int range = TCPConst.maxPortNum / threadCount;
             if (threadIndex==0)
             {
-                minPort = 0;
+                minPort = TCPConst.minPortNum;
                 maxPort = threadIndex+1 * range;
             }
             else if (threadIndex== threadCount)

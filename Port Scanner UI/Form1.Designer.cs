@@ -76,6 +76,7 @@ namespace Port_Scanner_UI
             this.btnStop.Size = new System.Drawing.Size(100, 23);
             this.btnStop.TabIndex = 1;
             this.btnStop.Text = "Stop Scan";
+            this.btnStop.Click += new System.EventHandler(this.btnStop_Click);
             // 
             // lblIprange
             // 
@@ -89,6 +90,7 @@ namespace Port_Scanner_UI
             // 
             // txtIprangeMin
             // 
+            this.txtIprangeMin.EditValue = "127.0.0.1";
             this.txtIprangeMin.Location = new System.Drawing.Point(55, 69);
             this.txtIprangeMin.Name = "txtIprangeMin";
             this.txtIprangeMin.Properties.BeepOnError = false;
@@ -102,7 +104,7 @@ namespace Port_Scanner_UI
             // 
             // txtIprangeMax
             // 
-            this.txtIprangeMax.EditValue = "0.0.0.10";
+            this.txtIprangeMax.EditValue = "127.0.0.2";
             this.txtIprangeMax.Location = new System.Drawing.Point(197, 69);
             this.txtIprangeMax.Name = "txtIprangeMax";
             this.txtIprangeMax.Properties.MaskSettings.Set("MaskManagerType", typeof(DevExpress.Data.Mask.RegExpMaskManager));
@@ -123,18 +125,20 @@ namespace Port_Scanner_UI
             // 
             // trckBarThreadCount
             // 
-            this.trckBarThreadCount.EditValue = null;
+            this.trckBarThreadCount.EditValue = 1;
             this.trckBarThreadCount.Location = new System.Drawing.Point(448, 72);
             this.trckBarThreadCount.Name = "trckBarThreadCount";
             this.trckBarThreadCount.Properties.LabelAppearance.Options.UseTextOptions = true;
             this.trckBarThreadCount.Properties.LabelAppearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
             this.trckBarThreadCount.Properties.LookAndFeel.SkinName = "DevExpress Style";
             this.trckBarThreadCount.Properties.LookAndFeel.Style = DevExpress.LookAndFeel.LookAndFeelStyle.UltraFlat;
+            this.trckBarThreadCount.Properties.Minimum = 1;
             this.trckBarThreadCount.Properties.ShowLabels = true;
             this.trckBarThreadCount.Properties.ShowLabelsForHiddenTicks = true;
             this.trckBarThreadCount.Properties.ShowValueToolTip = true;
             this.trckBarThreadCount.Size = new System.Drawing.Size(348, 45);
             this.trckBarThreadCount.TabIndex = 6;
+            this.trckBarThreadCount.Value = 1;
             this.trckBarThreadCount.EditValueChanged += new System.EventHandler(this.trckBarThreadCount_EditValueChanged);
             // 
             // labelControl1
@@ -165,7 +169,7 @@ namespace Port_Scanner_UI
             this.lblThreadCounter.Name = "lblThreadCounter";
             this.lblThreadCounter.Size = new System.Drawing.Size(8, 19);
             this.lblThreadCounter.TabIndex = 9;
-            this.lblThreadCounter.Text = "0";
+            this.lblThreadCounter.Text = "1";
             // 
             // dockManager1
             // 
@@ -226,9 +230,9 @@ namespace Port_Scanner_UI
             this.rtxtConsole.Location = new System.Drawing.Point(55, 210);
             this.rtxtConsole.Name = "rtxtConsole";
             this.rtxtConsole.ReadOnly = true;
-            this.rtxtConsole.Size = new System.Drawing.Size(881, 228);
+            this.rtxtConsole.Size = new System.Drawing.Size(889, 242);
             this.rtxtConsole.TabIndex = 10;
-            this.rtxtConsole.Text = "asdasdas";
+            this.rtxtConsole.Text = "";
             this.rtxtConsole.TextChanged += new System.EventHandler(this.rtxtConsole_TextChanged);
             // 
             // lblConsole
@@ -245,7 +249,7 @@ namespace Port_Scanner_UI
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1068, 450);
+            this.ClientSize = new System.Drawing.Size(1067, 474);
             this.Controls.Add(this.lblConsole);
             this.Controls.Add(this.rtxtConsole);
             this.Controls.Add(this.trckBarThreadCount);
@@ -258,6 +262,8 @@ namespace Port_Scanner_UI
             this.Controls.Add(this.lblIprange);
             this.Controls.Add(this.btnStop);
             this.Controls.Add(this.btnStart);
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "Form1";
             this.Text = "Port Scanner";
             ((System.ComponentModel.ISupportInitialize)(this.txtIprangeMin.Properties)).EndInit();
