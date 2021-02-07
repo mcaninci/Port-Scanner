@@ -1,8 +1,10 @@
-﻿using Infrastructure.Data.Interface;
+﻿using DevExpress.XtraEditors;
+using Infrastructure.Data.Interface;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
-using ThreadOp= ThreadOperation.ThreadOperation;
+using System.Threading.Tasks;
+using ThreadOp = ThreadOperation.ThreadOperation;
 
 namespace Port_Scanner_UI
 {
@@ -10,14 +12,15 @@ namespace Port_Scanner_UI
     {
 
         Ilogger logger;
-         static int currentThreadCount=0;
+        static int currentThreadCount = 0;
+        bool isRunning = false;
 
         ThreadMethod executionMethod = new ThreadMethod();
         ThreadOp threadOperation = null;
         public ScanOperation(Logger.Logger logger)
         {
             this.logger = logger;
-         
+
         }
 
         ScanOperation(Ilogger logger)
@@ -27,12 +30,13 @@ namespace Port_Scanner_UI
 
         }
 
-  
 
-        public void ScanStart(int threadCount,LinkedList<string> ips)
+
+        public void ScanStart(int threadCount, LinkedList<string> ips)
         {
+            isRunning = true;
             currentThreadCount = threadCount;
-            threadOperation =  new ThreadOp(ips, threadCount, logger, executionMethod);
+            threadOperation = new ThreadOp(ips, threadCount, logger, executionMethod);
             threadOperation.GenerateThread();
             threadOperation.ThreadRun();
 
@@ -40,19 +44,27 @@ namespace Port_Scanner_UI
 
         public void ScanStop()
         {
+            isRunning = false;
             if (threadOperation != null)
             {
+
                 threadOperation.TerminateAllThread();
             }
 
         }
 
-        public void ThreadCountUpdate(int threadCount)
+        public void ThreadCountUpdate(int threadCount, TrackBarControl trcbar)
         {
 
-            if (threadOperation!=null && currentThreadCount!=threadCount)
+            if (threadOperation != null && currentThreadCount != threadCount && isRunning)
             {
-                threadOperation.UpdateThreadCount(threadCount);
+                logger.WriteLog("Thread count is changing.Please wait.");
+            
+                    isRunning = false;
+                    threadOperation.UpdateThreadCount(threadCount);
+                    isRunning = true;
+                    trcbar.Enabled = true;
+              
             }
 
 

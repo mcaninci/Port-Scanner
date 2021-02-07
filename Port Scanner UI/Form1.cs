@@ -17,6 +17,7 @@ namespace Port_Scanner_UI
     {
         Log logger = new Log();
         ScanOperation scanOperation;
+        bool isRunning = false;
         public Form1()
         {
             InitializeComponent();
@@ -28,7 +29,15 @@ namespace Port_Scanner_UI
         {
             TrackBarControl trackBarControl = sender as TrackBarControl;
            lblThreadCounter.Text = trackBarControl.EditValue.ToString();
-            scanOperation.ThreadCountUpdate(trackBarControl.Value);
+            if (isRunning)
+            {
+                trackBarControl.Enabled = false;
+                Task.Run(() =>
+                {
+                    scanOperation.ThreadCountUpdate(trackBarControl.Value, trackBarControl);
+                });
+            }
+           
         }
 
         private void rtxtConsole_TextChanged(object sender, EventArgs e)
@@ -54,6 +63,7 @@ namespace Port_Scanner_UI
                 LinkedList<string> ipList = IpOperation.Convert.RangeToIpList(minIp, maxIp);
 
                 scanOperation.ScanStart(threadCount, ipList);
+                isRunning = true;
 
             }
             else
@@ -65,7 +75,9 @@ namespace Port_Scanner_UI
 
         private void btnStop_Click(object sender, EventArgs e)
         {
+            isRunning = false;
             scanOperation.ScanStop();
+            trckBarThreadCount.Enabled = true;
         }
     }
 }
