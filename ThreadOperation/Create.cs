@@ -19,27 +19,26 @@ namespace ThreadOperation
         int threadCount;
        public Create(string Ip,int threadCount, Ilogger logger =null, IThreadOperation threadOperation = null )
         {
-            this.threadOperation = threadOperation;
-            this.logger = logger;
+            this.threadOperation = threadOperation==null?new NullObjectThreadExecute():threadOperation;
+            this.logger = logger==null?new NullobjectLogger():logger;
             this.threadCount = threadCount;
             threadList = new List<Thread>(threadCount);
             this.Ip = Ip;
 
         }     
 
-        private void GenerateThread()
+        public List<Thread> GenerateThread()
         {
           
 
             for (int i = 0; i < threadCount; i++)
             {
-               
-                Thread tmpThread = new Thread(() => ThreadStart(SetThreadPortRange(i)));
+                PortRange portRange = SetThreadPortRange(i);
+                Thread tmpThread = new Thread(() => ThreadStart(portRange));
                 tmpThread.Name = "Thread " + i;
                 threadList.Add(tmpThread);
             }
-           
-            
+            return threadList;
 
         }
 
@@ -71,7 +70,7 @@ namespace ThreadOperation
         private void ThreadStart(IPortRange portRange)
         {
 
-            threadOperation.executeMethod(Ip, null, logger);
+            threadOperation.executeMethod(Ip, portRange, logger);
         }
 
         public void ThreadRun()
@@ -82,6 +81,20 @@ namespace ThreadOperation
                 thread.Start();
             }
 
+
+        }
+
+        public void UpdateThreadCount(int threadCount)
+        {
+
+            if (threadList.Count< threadCount)
+            {
+
+            }
+            else
+            {
+
+            }
 
         }
         

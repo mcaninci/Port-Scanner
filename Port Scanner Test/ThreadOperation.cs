@@ -1,31 +1,64 @@
-﻿using NUnit.Framework;
+﻿using Infrastructure.Data.Interface;
+using Infrastructure.Data.Model;
+using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using ThreadOperation;
 
 namespace Port_Scanner_Test
 {
+    
     class ThreadOperation
     {
         Create threadcreate;
         [SetUp]
         public void Setup()
         {
-             threadcreate = new Create("127.0.0.1",10,null,null);
+            NullobjectLogger logger = new();
+            NullObjectThreadExecute threadExecute = new();
+
+            threadcreate = new Create("127.0.0.1", 10, logger: logger, threadOperation: threadExecute);
+          //  threadcreate = new Create("127.0.0.1", 10, null,null);
         }
 
         [Test]
         public void ThreadPortRange()
         {
 
-         var a=   threadcreate.SetThreadPortRange(0);
+         var first=   threadcreate.SetThreadPortRange(0);
 
-         var b = threadcreate.SetThreadPortRange(1);
-          int asd =  b.NextPort();
+         var second = threadcreate.SetThreadPortRange(1);
+          
+            if (second.NextPort()== 6554 && first.NextPort()==0)
+            {
+                Assert.Pass();
+            }
+            Assert.Fail("ThreadPortRange  method not working right");
+        }
 
+        [Test]
+        public void ThreadCreate()
+        {
+
+         var threadList =threadcreate.GenerateThread();
+            if (threadList.Count==10 && threadList.FirstOrDefault().GetType().ToString()== "System.Threading.Thread")
+            {
+                Assert.Pass();
+            }
+            Assert.Fail("ThreadPortRange  method not working right");
+        }
+
+        [Test]
+        public void ThreadRun()
+        {
+            _ = threadcreate.GenerateThread();
+            threadcreate.ThreadRun();
+            
         }
     }
+
 }

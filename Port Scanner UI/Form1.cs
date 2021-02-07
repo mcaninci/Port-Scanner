@@ -9,14 +9,17 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using TCPOperation;
+using Log= Logger.Logger;
 
 namespace Port_Scanner_UI
 {
     public partial class Form1 : Form
     {
+        Log logger = new Log();
         public Form1()
         {
             InitializeComponent();
+            logger.SetTargetComp(rtxtConsole);
         }
 
         private void trckBarThreadCount_EditValueChanged(object sender, EventArgs e)
@@ -43,7 +46,13 @@ namespace Port_Scanner_UI
             if (validationIp)
             {
                 List<string> ipList = IpOperation.Convert.RangeToIpList(minIp, maxIp);
-       
+             
+                Parallel.ForEach(ipList, item =>
+                {
+                    logger.WriteLog(item);
+
+                }
+     );
 
             }
             else

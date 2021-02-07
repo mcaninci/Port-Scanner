@@ -102,6 +102,7 @@ namespace Port_Scanner_UI
             // 
             // txtIprangeMax
             // 
+            this.txtIprangeMax.EditValue = "0.0.0.10";
             this.txtIprangeMax.Location = new System.Drawing.Point(197, 69);
             this.txtIprangeMax.Name = "txtIprangeMax";
             this.txtIprangeMax.Properties.MaskSettings.Set("MaskManagerType", typeof(DevExpress.Data.Mask.RegExpMaskManager));

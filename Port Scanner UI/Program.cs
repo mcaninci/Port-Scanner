@@ -16,6 +16,7 @@ namespace Port_Scanner_UI
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
+            Control.CheckForIllegalCrossThreadCalls = false;
             Application.Run(new Form1());
         }
     }
