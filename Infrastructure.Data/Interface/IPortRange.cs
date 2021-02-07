@@ -14,5 +14,6 @@ namespace Infrastructure.Data.Interface
         int GetStartPort();
 
         int GetEndPort();
+        void UpdatePortRange(int threadCount, int threadIndex);
     }
 }

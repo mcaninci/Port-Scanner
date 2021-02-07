@@ -1,4 +1,5 @@
 ﻿using Infrastructure.Data.Interface;
+using Infrastructure.Data.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace TCPOperation
 {
-   public class PortRange: IPortRange
+    public class PortRange : IPortRange
     {
         private int start;
         private int stop;
@@ -16,14 +17,14 @@ namespace TCPOperation
 
         public PortRange(int startPort, int stopPort)
         {
-      
+
             start = startPort;
             stop = stopPort;
             ports = start;
         }
         public int GetStartPort()
         {
-           return start;
+            return start;
         }
         public int GetEndPort()
         {
@@ -44,6 +45,33 @@ namespace TCPOperation
                 return ports++;
             }
             return -1;
+        }
+
+        public void UpdatePortRange(int threadCount, int threadIndex)
+        {
+
+
+            int range = TCPConst.maxPortNum / threadCount;
+            if (threadIndex == 0)
+            {
+                start = TCPConst.minPortNum;
+                stop = threadIndex + 1 * range;
+                ports = start;
+            }
+            else if (threadIndex == threadCount)
+            {
+                start = ((threadIndex) * range) + 1;
+                stop = TCPConst.maxPortNum;
+                ports = start;
+
+            }
+            else
+            {
+                start = ((threadIndex) * range) + 1;
+                stop = (threadIndex + 1) * range;
+                ports = start;
+            }
+
         }
     }
 }

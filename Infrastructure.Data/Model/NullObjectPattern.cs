@@ -27,7 +27,7 @@ namespace Infrastructure.Data.Model
 
   public  class NullObjectThreadExecute : IThreadOperation
     {
-        bool IThreadOperation.executeMethod(LinkedList<string> Ip, IPortRange portRange, Ilogger logger, EventWaitHandle threadSignal = null)
+        bool IThreadOperation.executeMethod(LinkedList<string> Ip, IPortRange portRange, Ilogger logger, int threadIndex, ref int threadCount, ref bool isAnyChange, CountdownEvent threadSignal = null)
         {
             
             return false;

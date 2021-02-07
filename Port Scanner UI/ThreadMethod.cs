@@ -12,17 +12,23 @@ namespace Port_Scanner_UI
 {
     public class ThreadMethod : IThreadOperation
     {
-        public bool executeMethod(LinkedList<string> Ip, IPortRange portRange, Ilogger logger)
+        public bool executeMethod(LinkedList<string> Ip, IPortRange portRange, Ilogger logger, int threadIndex, ref int threadCount, ref bool isAnyChange, CountdownEvent threadSignal)
         {
             LinkedListNode<string> currentHost = Ip.First;
             TCPRequest tcpRequest = new TCPRequest(currentHost.Value, TCPConst.timeout);
-           
+
             while (true)
             {
+                if (isAnyChange && !portRange.MorePorts())
+                {
+                    portRange.UpdatePortRange(threadCount, threadIndex);
+                    threadSignal.Signal();
+                }
                 if (!portRange.MorePorts())
                 {
+                   
                     portRange.ResetPorts();
-                    logger.WriteLog("Log :"+currentHost.Value +":"+portRange.GetStartPort()+"-"+portRange.GetEndPort()+"  port range is completed by thread  ");
+                    logger.WriteLog("Log :" + currentHost.Value + ":" + portRange.GetStartPort() + "-" + portRange.GetEndPort() + "  port range is completed by thread  ");
                     currentHost = currentHost.Next;
                     if (currentHost == null)
                     {
@@ -33,12 +39,15 @@ namespace Port_Scanner_UI
                     tcpRequest.UpdateHost(currentHost.Value);
 
                 }
-                int portNum = portRange.NextPort();
-                bool isPortOpen = tcpRequest.Connect(portNum);
-                if (isPortOpen)
-                {
-                    logger.WriteLog(currentHost.Value + ":" + portNum + " is open");
-                }
+               
+
+                    int portNum = portRange.NextPort();
+                    bool isPortOpen = tcpRequest.Connect(portNum);
+                    if (isPortOpen)
+                    {
+                        logger.WriteLog(currentHost.Value + ":" + portNum + " is open");
+                    }
+              
             }
 
 

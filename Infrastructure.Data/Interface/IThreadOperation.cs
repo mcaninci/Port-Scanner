@@ -9,6 +9,6 @@ namespace Infrastructure.Data.Interface
 {
   public  interface IThreadOperation
     {
-        bool executeMethod(LinkedList<string> Ip, IPortRange portRange, Ilogger logger, EventWaitHandle threadSignal=null);
+        bool executeMethod(LinkedList<string> Ip, IPortRange portRange, Ilogger logger, int threadIndex, ref  int threadCount, ref bool isAnyChange,CountdownEvent threadSignal = null);
     }
 }

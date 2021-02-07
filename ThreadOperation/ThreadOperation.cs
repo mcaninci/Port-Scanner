@@ -17,13 +17,15 @@ namespace ThreadOperation
         List<Thread> threadList;
         LinkedList<string> Ip;
         int threadCount;
-        static EventWaitHandle threadSignal = new AutoResetEvent(false);
-        static EventWaitHandle updateSignal = new AutoResetEvent(false);
+        bool isAnyChange = false;
+      //  static EventWaitHandle threadSignal = new AutoResetEvent(false);
+        static CountdownEvent threadCountEvent;
         public ThreadOperation(LinkedList<string> Ip,int threadCount, Ilogger logger =null, IThreadOperation threadOperation = null )
         {
             this.threadOperation = threadOperation==null?new NullObjectThreadExecute():threadOperation;
             this.logger = logger==null?new NullobjectLogger():logger;
             this.threadCount = threadCount;
+            threadCountEvent = new CountdownEvent(threadCount);
             threadList = new List<Thread>(threadCount);
             this.Ip = Ip;
 
@@ -37,7 +39,7 @@ namespace ThreadOperation
             {
                 PortRange portRange = SetThreadPortRange(i);
                 int index = i;
-                Thread tmpThread = new Thread(() => ThreadStart(portRange,index, threadSignal));
+                Thread tmpThread = new Thread(() => ThreadStart(portRange,index, threadCountEvent));
                 tmpThread.Name = "Thread " + i;
                 tmpThread.IsBackground = true;
                 threadList.Add(tmpThread);
@@ -71,10 +73,10 @@ namespace ThreadOperation
             return portRange;
         }
 
-        private void ThreadStart(IPortRange portRange,int threadIndex, EventWaitHandle threadSignal)
+        private void ThreadStart(IPortRange portRange,int threadIndex, CountdownEvent threadSignal)
         {
 
-            _=threadOperation.executeMethod(Ip, portRange, logger, threadSignal);
+            _=threadOperation.executeMethod(Ip, portRange, logger, threadIndex, ref this.threadCount, ref isAnyChange, threadSignal);
             CheckProcessandsuspend(threadIndex);
         }
 
@@ -91,15 +93,28 @@ namespace ThreadOperation
 
         public void UpdateThreadCount(int threadCount)
         {
-
-            if (threadList.Count< threadCount)
+            this.threadCount = threadCount;
+            isAnyChange = true;
+            threadCountEvent.Wait();
+            isAnyChange = false;
+            threadCountEvent = new CountdownEvent(threadCount);
+            if (threadList.Count < threadCount)
             {
-                threadSignal.Set();
-            }
-            else
-            {
 
+                for (int i = threadList.Count; i < (threadCount- threadList.Count)+1; i++)
+                {
+                    PortRange portRange = SetThreadPortRange(i);
+                    int index = i;
+                    Thread tmpThread = new Thread(() => ThreadStart(portRange, index, threadCountEvent));
+                    tmpThread.Name = "Thread " + i;
+                    tmpThread.IsBackground = true;
+                    threadList.Add(tmpThread);
+                    logger.WriteLog(tmpThread.Name + " is running");
+                    tmpThread.Start();
+                }
+                
             }
+        
 
         }
       private void CheckProcessandsuspend(int threadIndex)
