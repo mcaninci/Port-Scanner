@@ -66,7 +66,21 @@ namespace Port_Scanner_Test
             Assert.Fail("RangeToIpList method not working right");
         }
 
-        
+        [Test]
+        public void IPNotation()
+        {
+            string strIp = "192.168.0.1/23";
+            var ipslist = IpOperation.Convert.IpNotitaionToIpList(strIp);
+       
 
+
+            if (ipslist.Last.Value == "192.168.1.255")
+            {
+                Assert.Pass();
+            }
+
+            Assert.Fail("Convert method not working right");
+        }
+       
     }
 }
