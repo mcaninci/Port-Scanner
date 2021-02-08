@@ -18,6 +18,8 @@ namespace Port_Scanner_UI
         Log logger = new Log();
         ScanOperation scanOperation;
         bool isRunning = false;
+        bool user_done_updating = false;
+        bool isIprange = true;
         public Form1()
         {
             InitializeComponent();
@@ -29,15 +31,25 @@ namespace Port_Scanner_UI
         {
             TrackBarControl trackBarControl = sender as TrackBarControl;
            lblThreadCounter.Text = trackBarControl.EditValue.ToString();
-            if (isRunning)
+            user_done_updating = true; 
+           
+           
+        }
+
+  
+        private void trckBarThreadCount_MouseUp(object sender, EventArgs e)
+        {
+            TrackBarControl trackBarControl = sender as TrackBarControl;
+            if (isRunning && user_done_updating  )
             {
                 trackBarControl.Enabled = false;
                 Task.Run(() =>
                 {
                     scanOperation.ThreadCountUpdate(trackBarControl.Value, trackBarControl);
                 });
+                user_done_updating = false;
             }
-           
+
         }
 
         private void rtxtConsole_TextChanged(object sender, EventArgs e)
@@ -53,23 +65,38 @@ namespace Port_Scanner_UI
         private void btnStart_Click(object sender, EventArgs e)
         {
             rtxtConsole.Text = "";
-            string minIp = txtIprangeMin.Text;
-            string maxIp = txtIprangeMax.Text;
-
-            bool validationIp = IpOperation.IpValidation.IsRangeValid(minIp, maxIp);
             int threadCount = trckBarThreadCount.Value;
-            if (validationIp)
+            LinkedList<string> ipList=null;
+            if (isIprange)
             {
-                LinkedList<string> ipList = IpOperation.Convert.RangeToIpList(minIp, maxIp);
+                string minIp = txtIprangeMin.Text;
+                string maxIp = txtIprangeMax.Text;
+                bool validationIp = IpOperation.IpValidation.IsRangeValid(minIp, maxIp);
+                if (validationIp)
+                {
+                    ipList = IpOperation.Convert.RangeToIpList(minIp, maxIp);
 
-                scanOperation.ScanStart(threadCount, ipList);
-                isRunning = true;
+                }
+                else
+                {
+                    MessageBox.Show("Ip range is not valid. Please check min- max Ip");
+                    return;
+                }
 
             }
             else
             {
-                MessageBox.Show("Ip range is not valid. Please check min- max Ip");
+                ipList = IpOperation.Convert.IpNotitaionToIpList(txtIpNotation.Text);
+
             }
+            if (ipList==null)
+            {
+                MessageBox.Show("Something's wrong.Please check ips");
+                return;
+            }
+            scanOperation.ScanStart(threadCount, ipList);
+            isRunning = true;
+
 
         }
 
@@ -78,6 +105,24 @@ namespace Port_Scanner_UI
             isRunning = false;
             scanOperation.ScanStop();
             trckBarThreadCount.Enabled = true;
+        }
+
+        private void radioRange_CheckedChanged(object sender, EventArgs e)
+        {
+            isIprange = true;
+            txtIpNotation.Visible = false;
+            txtIprangeMin.Visible=true;
+            txtIprangeMax.Visible=true;
+            labelControl1.Visible = true;
+        }
+
+        private void radioNotation_CheckedChanged(object sender, EventArgs e)
+        {
+            isIprange = false;
+            txtIprangeMin.Visible = false;
+            txtIprangeMax.Visible = false;
+            labelControl1.Visible = false;
+            txtIpNotation.Visible = true;
         }
     }
 }

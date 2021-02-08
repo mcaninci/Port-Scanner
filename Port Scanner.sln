@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Port Scanner UI", "Port Sca
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Port Scanner Test", "Port Scanner Test\Port Scanner Test.csproj", "{52B07E78-97A6-44D7-9459-7BC117D3FB7E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IpOperation.Net", "IpOperation.Net\IpOperation.Net.csproj", "{08CED4EC-FE9A-4E47-984E-D6EA48D688C1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IpOperation", "IpOperation.Net\IpOperation.csproj", "{08CED4EC-FE9A-4E47-984E-D6EA48D688C1}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TCPOperation", "TCPOperation\TCPOperation.csproj", "{A355D96E-625C-4ED5-9793-B6E9574AB707}"
 EndProject

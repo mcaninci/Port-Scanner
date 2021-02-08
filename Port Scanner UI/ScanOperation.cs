@@ -58,7 +58,7 @@ namespace Port_Scanner_UI
 
             if (threadOperation != null && currentThreadCount != threadCount && isRunning)
             {
-                logger.WriteLog("Thread count is changing.Please wait.");
+                logger.WriteLog("Thread count is changing for next ip adress.Please wait.");
             
                     isRunning = false;
                     threadOperation.UpdateThreadCount(threadCount);

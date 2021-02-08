@@ -61,14 +61,19 @@ namespace TCPOperation
             };
 
             IAsyncResult ar = tcpClient.BeginConnect(this.host, port, AsyncCallback, state);
+            Thread.Sleep(5);
             state.tcpOpen = ar.AsyncWaitHandle.WaitOne(tcpTimeout, false);
-
-            if (state.tcpOpen == false || tcpClient.Connected == false)
+            bool isOpen = false;
+            if (state.tcpOpen != false || tcpClient.Connected != false)
             {
-                return false;
+                isOpen=true;
 
             }
-            return true;
+
+            tcpClient.Close();
+
+
+            return isOpen;
         }
 
 
@@ -84,20 +89,25 @@ namespace TCPOperation
 
             try
             {
-                client.EndConnect(asyncResult);
+
+                if (client.Client!=null)
+                {
+                    client.EndConnect(asyncResult);
+                }
+                
             }
             catch
             {
-                client.Close();
+              
                 return;
             }
 
-            if (client.Connected && state.tcpOpen)
+            if (client.Client != null && client.Connected && state.tcpOpen)
             {
                 return;
             }
 
-            client.Close();
+         
         }
 
 

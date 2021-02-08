@@ -12,42 +12,49 @@ namespace Port_Scanner_UI
 {
     public class ThreadMethod : IThreadOperation
     {
-        public bool executeMethod(LinkedList<string> Ip, IPortRange portRange, Ilogger logger, int threadIndex, ref int threadCount, ref bool isAnyChange, CountdownEvent threadSignal)
+        public bool executeMethod(LinkedList<string> Ip, IPortRange portRange, Ilogger logger, int threadIndex, ref int threadCount, ref bool isAnyChange, ref CountdownEvent threadSignal)
         {
             LinkedListNode<string> currentHost = Ip.First;
             TCPRequest tcpRequest = new TCPRequest(currentHost.Value, TCPConst.timeout);
 
             while (true)
             {
-                if (isAnyChange && !portRange.MorePorts())
-                {
-                    portRange.UpdatePortRange(threadCount, threadIndex);
-                    threadSignal.Signal();
-                }
-                if (!portRange.MorePorts())
-                {
-                   
-                    portRange.ResetPorts();
-                    logger.WriteLog("Log :" + currentHost.Value + ":" + portRange.GetStartPort() + "-" + portRange.GetEndPort() + "  port range is completed by thread  ");
-                    currentHost = currentHost.Next;
-                    if (currentHost == null)
-                    {
-                        break;
-                    }
-                    //Thread sleep added for cpu optimization
-                    Thread.Sleep(3);
-                    tcpRequest.UpdateHost(currentHost.Value);
 
-                }
-               
-
-                    int portNum = portRange.NextPort();
-                bool isPortOpen;
                 try
                 {
-                     isPortOpen = tcpRequest.Connect(portNum);
-              
-                   
+                    if (isAnyChange && !portRange.MorePorts())
+                    {
+                        //Thread port range will change to next IP
+                        portRange.UpdatePortRange(threadCount, threadIndex);
+                        if (threadSignal != null)
+                        {
+                            threadSignal.Signal();
+                        }
+
+                    }
+                    if (!portRange.MorePorts())
+                    {
+
+                        portRange.ResetPorts();
+                        logger.WriteLog("Log :" + currentHost.Value + ":" + portRange.GetStartPort() + "-" + portRange.GetEndPort() + "  port range is completed by thread  ");
+                        currentHost = currentHost.Next;
+                        if (currentHost == null)
+                        {
+                            break;
+                        }
+                        //Thread sleep added for cpu optimization
+                        Thread.Sleep(3);
+                        tcpRequest.UpdateHost(currentHost.Value);
+
+                    }
+
+
+                    int portNum = portRange.NextPort();
+                    bool isPortOpen;
+
+                    isPortOpen = tcpRequest.Connect(portNum);
+
+
                     if (isPortOpen)
                     {
                         logger.WriteLog(currentHost.Value + ":" + portNum + " is open");
@@ -55,7 +62,7 @@ namespace Port_Scanner_UI
                 }
                 catch (Exception e)
                 {
-                    logger.WriteLog("ERROR: "+e.Message);
+                    logger.WriteLog("ERROR: " + e.Message);
 
                 }
             }

@@ -39,7 +39,7 @@ namespace ThreadOperation
             {
                 PortRange portRange = SetThreadPortRange(i);
                 int index = i;
-                Thread tmpThread = new Thread(() => ThreadStart(portRange,index, threadCountEvent));
+                Thread tmpThread = new Thread(() => ThreadStart(portRange,index));
                 tmpThread.Name = "Thread " + i;
                 tmpThread.IsBackground = true;
                 threadList.Add(tmpThread);
@@ -73,10 +73,10 @@ namespace ThreadOperation
             return portRange;
         }
 
-        private void ThreadStart(IPortRange portRange,int threadIndex, CountdownEvent threadSignal)
+        private void ThreadStart(IPortRange portRange,int threadIndex)
         {
 
-            _=threadOperation.executeMethod(Ip, portRange, logger, threadIndex, ref this.threadCount, ref isAnyChange, threadSignal);
+            _=threadOperation.executeMethod(Ip, portRange, logger, threadIndex, ref this.threadCount, ref isAnyChange, ref threadCountEvent);
             CheckProcessandsuspend(threadIndex);
         }
 
@@ -95,17 +95,20 @@ namespace ThreadOperation
         {
             this.threadCount = threadCount;
             isAnyChange = true;
+            //All thread completed running ip and changed port range for new ip
             threadCountEvent.Wait();
             isAnyChange = false;
-            threadCountEvent = new CountdownEvent(threadCount);
+          
+
+
             if (threadList.Count < threadCount)
             {
-
-                for (int i = threadList.Count; i < (threadCount- threadList.Count)+1; i++)
+                threadCountEvent = new CountdownEvent(this.threadCount+1);
+                for (int i = threadList.Count; i < threadCount+1; i++)
                 {
                     PortRange portRange = SetThreadPortRange(i);
                     int index = i;
-                    Thread tmpThread = new Thread(() => ThreadStart(portRange, index, threadCountEvent));
+                    Thread tmpThread = new Thread(() => ThreadStart(portRange, index));
                     tmpThread.Name = "Thread " + i;
                     tmpThread.IsBackground = true;
                     threadList.Add(tmpThread);
@@ -114,7 +117,11 @@ namespace ThreadOperation
                 }
                 
             }
-        
+            else
+            {
+                //TODOMCI The thread count will be reduced, but not terminated in thread list
+            }
+
 
         }
       private void CheckProcessandsuspend(int threadIndex)

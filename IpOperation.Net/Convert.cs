@@ -36,6 +36,19 @@ namespace IpOperation
 
             return ipList;
         }
-
+        public static LinkedList<string> IpNotitaionToIpList(string ipNotation)
+        {
+            LinkedList<string> ipList = new LinkedList<string>();
+            IPNetwork ipnetwork = IPNetwork.Parse(ipNotation);
+            var ips = IPNetwork.Subnet(ipnetwork, 32);
+         
+            foreach (IPNetwork item in ips)
+            {
+                
+                ipList.AddLast(item.Network.ToString());
+            }
+            return ipList;
+          
+        }
     }
 }
